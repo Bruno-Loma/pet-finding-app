@@ -1,152 +1,1392 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Lost & Found Pets</title>
-  <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Lost & Found Pets</title>
+
+<style>
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: #e8e8e8;
+    color: #111;
+}
+
+.app {
+    max-width: 520px;
+    min-height: 100vh;
+    margin: auto;
+    background: white;
+    position: relative;
+}
+
+/* HEADER */
+
+header {
+    height: 65px;
+    border-bottom: 1px solid #ccc;
+
+    display: grid;
+    grid-template-columns: 50px 1fr 50px;
+
+    align-items: center;
+
+    padding: 0 12px;
+
+    position: sticky;
+    top: 0;
+
+    background: white;
+
+    z-index: 10;
+}
+
+header h1 {
+    text-align: center;
+    font-size: 18px;
+}
+
+header button {
+    border: none;
+    background: none;
+    font-size: 24px;
+}
+
+/* PAGES */
+
+.page {
+    padding: 18px;
+    padding-bottom: 100px;
+}
+
+.hidden {
+    display: none;
+}
+
+/* FILTER */
+
+.tabs {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+
+    border: 1px solid #222;
+    border-radius: 6px;
+
+    overflow: hidden;
+
+    margin-bottom: 25px;
+}
+
+.tabs button {
+    padding: 11px;
+
+    background: white;
+
+    border: none;
+    border-right: 1px solid #ccc;
+
+    cursor: pointer;
+}
+
+.tabs button:last-child {
+    border-right: none;
+}
+
+.tabs button.active {
+    background: #eee;
+    font-weight: bold;
+}
+
+/* FEED */
+
+.feed-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    margin-bottom: 15px;
+}
+
+.feed-title h2 {
+    font-size: 18px;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+}
+
+/* PET CARD */
+
+.card {
+    border: 1px solid #ccc;
+    border-radius: 8px;
+
+    overflow: hidden;
+
+    cursor: pointer;
+
+    background: white;
+}
+
+.card-image {
+    height: 150px;
+
+    background: #eee;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    overflow: hidden;
+}
+
+.card-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.emoji {
+    font-size: 55px;
+}
+
+.card-info {
+    padding: 10px;
+}
+
+.status {
+    display: inline-block;
+
+    padding: 4px 7px;
+
+    border: 1px solid #222;
+
+    font-size: 10px;
+
+    font-weight: bold;
+
+    margin-bottom: 7px;
+}
+
+.card-info h3 {
+    font-size: 14px;
+    margin-bottom: 6px;
+}
+
+.card-info p {
+    font-size: 11px;
+    color: #555;
+}
+
+/* ADD BUTTON */
+
+.add {
+    position: fixed;
+
+    bottom: 85px;
+    right: max(calc((100vw - 480px) / 2), 20px);
+
+    width: 58px;
+    height: 58px;
+
+    border-radius: 50%;
+
+    border: 1px solid #111;
+
+    background: white;
+
+    font-size: 32px;
+
+    cursor: pointer;
+
+    box-shadow: 0 3px 10px #aaa;
+}
+
+/* NAV */
+
+nav {
+    position: fixed;
+
+    bottom: 0;
+
+    width: 100%;
+    max-width: 520px;
+
+    height: 72px;
+
+    background: white;
+
+    border-top: 1px solid #ccc;
+
+    display: grid;
+
+    grid-template-columns: repeat(3, 1fr);
+
+    z-index: 20;
+}
+
+nav button {
+    border: none;
+    background: white;
+
+    font-size: 23px;
+
+    cursor: pointer;
+}
+
+nav small {
+    display: block;
+
+    font-size: 11px;
+
+    margin-top: 4px;
+}
+
+/* FORM */
+
+.title {
+    display: grid;
+
+    grid-template-columns: 40px 1fr;
+
+    align-items: center;
+
+    margin-bottom: 25px;
+}
+
+.title h2 {
+    text-align: center;
+    font-size: 18px;
+}
+
+.title button {
+    border: none;
+    background: none;
+
+    font-size: 25px;
+
+    cursor: pointer;
+}
+
+label {
+    display: block;
+
+    font-size: 13px;
+
+    font-weight: bold;
+
+    margin: 15px 0 7px;
+}
+
+label small {
+    color: #777;
+    font-weight: normal;
+}
+
+input,
+select,
+textarea {
+    width: 100%;
+
+    padding: 12px;
+
+    border: 1px solid #bbb;
+
+    border-radius: 6px;
+
+    font-family: Arial;
+}
+
+textarea {
+    min-height: 100px;
+}
+
+.upload {
+    height: 140px;
+
+    border: 2px dashed #999;
+
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: center;
+
+    align-items: center;
+
+    gap: 7px;
+
+    cursor: pointer;
+}
+
+.upload span {
+    font-size: 30px;
+}
+
+.upload input {
+    display: none;
+}
+
+/* TYPE */
+
+.type {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+
+    border: 1px solid #bbb;
+
+    border-radius: 6px;
+
+    overflow: hidden;
+}
+
+.type button {
+    padding: 11px;
+
+    border: none;
+
+    background: white;
+
+    cursor: pointer;
+}
+
+.type button.selected {
+    background: #eee;
+    font-weight: bold;
+}
+
+/* SUBMIT */
+
+.submit {
+    width: 100%;
+
+    padding: 15px;
+
+    margin-top: 25px;
+
+    border: 1px solid #111;
+
+    border-radius: 6px;
+
+    background: #eee;
+
+    font-weight: bold;
+
+    cursor: pointer;
+}
+
+/* PROFILE */
+
+.profile-top {
+    display: grid;
+
+    grid-template-columns: 160px 1fr;
+
+    gap: 15px;
+}
+
+.profile-image {
+    width: 160px;
+    height: 160px;
+
+    object-fit: cover;
+
+    border-radius: 7px;
+
+    background: #eee;
+}
+
+.info {
+    border: 1px solid #ccc;
+
+    border-radius: 7px;
+
+    padding: 16px;
+
+    margin-top: 15px;
+}
+
+.info h3 {
+    margin-bottom: 10px;
+}
+
+.info p {
+    font-size: 13px;
+
+    line-height: 1.6;
+}
+
+.found {
+    width: 100%;
+
+    padding: 14px;
+
+    margin-top: 15px;
+
+    background: #eee;
+
+    border: 1px solid #111;
+
+    border-radius: 6px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+}
+
+.empty {
+    grid-column: 1 / -1;
+
+    text-align: center;
+
+    padding: 50px 20px;
+
+    color: #777;
+}
+
+</style>
 </head>
+
 
 <body>
 
 <div class="app">
 
-  <header>
-    <button onclick="alert('Menu')">☰</button>
+<!-- HEADER -->
+
+<header>
+
+    <button>☰</button>
+
     <h1>Lost & Found Pets</h1>
-    <button>♧</button>
-  </header>
 
-  <main>
+    <button>♡</button>
 
-    <!-- FEED -->
-    <section id="feed" class="page">
-
-      <div class="tabs">
-        <button class="active" onclick="filterPets('all', this)">All</button>
-        <button onclick="filterPets('lost', this)">Lost</button>
-        <button onclick="filterPets('found', this)">Found</button>
-      </div>
-
-      <h2>Recently Lost / Found</h2>
-
-      <div id="pets" class="grid"></div>
-
-      <button class="add" onclick="showPage('report')">+</button>
-
-    </section>
+</header>
 
 
-    <!-- REPORT -->
-    <section id="report" class="page hidden">
+<!-- FEED -->
 
-      <div class="title">
-        <button onclick="showPage('feed')">←</button>
-        <h2>Report a Lost or Found Pet</h2>
-      </div>
+<section id="feed" class="page">
 
-      <form id="petForm">
+    <div class="tabs">
 
-        <label>Pet Photo</label>
-
-        <label class="upload">
-          <span>🖼️</span>
-          <b>Tap to upload photo</b>
-          <small>or drag and drop</small>
-          <input id="photo" type="file" accept="image/*">
-        </label>
-
-        <h3>Pet Details</h3>
-
-        <label>Type</label>
-
-        <div class="type">
-          <button type="button" class="selected" onclick="setType('lost',this)">Lost</button>
-          <button type="button" onclick="setType('found',this)">Found</button>
-        </div>
-
-        <label>Pet Name <small>(optional)</small></label>
-        <input id="name" placeholder="e.g. Bella">
-
-        <label>Species</label>
-        <select id="species">
-          <option>Dog</option>
-          <option>Cat</option>
-          <option>Bird</option>
-          <option>Rabbit</option>
-          <option>Other</option>
-        </select>
-
-        <label>Breed <small>(optional)</small></label>
-        <input id="breed" placeholder="e.g. Golden Retriever">
-
-        <label>Color / Markings</label>
-        <input id="color" placeholder="e.g. Golden fur, white chest">
-
-        <label>Location</label>
-        <input id="location" placeholder="e.g. Central Park, New York" required>
-
-        <label>Date / Time</label>
-        <input id="date" type="datetime-local" required>
-
-        <label>Description</label>
-        <textarea id="description" placeholder="Add any extra details..."></textarea>
-
-        <h3>Contact Information</h3>
-
-        <label>Your Name</label>
-        <input id="contact" placeholder="John Doe" required>
-
-        <label>Phone</label>
-        <input id="phone" placeholder="(555) 123-4567" required>
-
-        <label>Email</label>
-        <input id="email" type="email" placeholder="john@email.com" required>
-
-        <button class="submit" type="submit">
-          Submit Report
+        <button
+            class="active"
+            onclick="filterPets('all', this)">
+            All
         </button>
 
-      </form>
+        <button
+            onclick="filterPets('lost', this)">
+            Lost
+        </button>
 
-    </section>
+        <button
+            onclick="filterPets('found', this)">
+            Found
+        </button>
 
-
-    <!-- PROFILE -->
-    <section id="profile" class="page hidden">
-
-      <div class="title">
-        <button onclick="showPage('feed')">←</button>
-        <h2>Pet Profile</h2>
-      </div>
-
-      <div id="profileContent"></div>
-
-    </section>
-
-  </main>
+    </div>
 
 
-  <nav>
-    <button class="navActive" onclick="showPage('feed')">
-      🏠
-      <small>Feed</small>
+    <div class="feed-title">
+
+        <h2>Recently Lost / Found</h2>
+
+        <span>🐾</span>
+
+    </div>
+
+
+    <div
+        id="petGrid"
+        class="grid">
+    </div>
+
+
+    <button
+        class="add"
+        onclick="showPage('report')">
+        +
     </button>
+
+</section>
+
+
+<!-- REPORT -->
+
+<section
+    id="report"
+    class="page hidden">
+
+    <div class="title">
+
+        <button onclick="showPage('feed')">
+            ←
+        </button>
+
+        <h2>
+            Report a Lost or Found Pet
+        </h2>
+
+    </div>
+
+
+    <form id="petForm">
+
+        <label>
+            Pet Photo
+        </label>
+
+        <label class="upload">
+
+            <span>🖼️</span>
+
+            <b>
+                Tap to upload photo
+            </b>
+
+            <small>
+                or choose a photo
+            </small>
+
+            <input
+                id="photo"
+                type="file"
+                accept="image/*">
+
+        </label>
+
+
+        <h3>
+            Pet Details
+        </h3>
+
+
+        <label>
+            Type
+        </label>
+
+
+        <div class="type">
+
+            <button
+                type="button"
+                class="selected"
+                onclick="setType('lost', this)">
+                Lost
+            </button>
+
+            <button
+                type="button"
+                onclick="setType('found', this)">
+                Found
+            </button>
+
+        </div>
+
+
+        <label>
+            Pet Name
+            <small>(optional)</small>
+        </label>
+
+        <input
+            id="name"
+            placeholder="e.g. Bella">
+
+
+        <label>
+            Species
+        </label>
+
+        <select id="species">
+
+            <option>Dog</option>
+
+            <option>Cat</option>
+
+            <option>Bird</option>
+
+            <option>Rabbit</option>
+
+            <option>Other</option>
+
+        </select>
+
+
+        <label>
+            Breed
+            <small>(optional)</small>
+        </label>
+
+        <input
+            id="breed"
+            placeholder="e.g. Golden Retriever">
+
+
+        <label>
+            Color / Markings
+        </label>
+
+        <input
+            id="color"
+            placeholder="e.g. Golden fur, white chest">
+
+
+        <label>
+            Location
+        </label>
+
+        <input
+            id="location"
+            placeholder="Where was the pet seen?"
+            required>
+
+
+        <label>
+            Date / Time
+        </label>
+
+        <input
+            id="date"
+            type="datetime-local"
+            required>
+
+
+        <label>
+            Description
+        </label>
+
+        <textarea
+            id="description"
+            placeholder="Add any extra details...">
+        </textarea>
+
+
+        <h3>
+            Contact Information
+        </h3>
+
+
+        <label>
+            Your Name
+        </label>
+
+        <input
+            id="contact"
+            placeholder="Your name"
+            required>
+
+
+        <label>
+            Phone
+        </label>
+
+        <input
+            id="phone"
+            placeholder="Phone number"
+            required>
+
+
+        <label>
+            Email
+        </label>
+
+        <input
+            id="email"
+            type="email"
+            placeholder="Email"
+            required>
+
+
+        <button
+            class="submit"
+            type="submit">
+
+            Submit Report
+
+        </button>
+
+    </form>
+
+</section>
+
+
+<!-- PROFILE -->
+
+<section
+    id="profile"
+    class="page hidden">
+
+    <div class="title">
+
+        <button onclick="showPage('feed')">
+            ←
+        </button>
+
+        <h2>
+            Pet Profile
+        </h2>
+
+    </div>
+
+
+    <div id="profileContent">
+    </div>
+
+</section>
+
+
+<!-- NAVIGATION -->
+
+<nav>
+
+    <button onclick="showPage('feed')">
+
+        🏠
+
+        <small>
+            Feed
+        </small>
+
+    </button>
+
 
     <button onclick="showPage('report')">
-      ⊞
-      <small>Report</small>
+
+        ⊕
+
+        <small>
+            Report
+        </small>
+
     </button>
 
-    <button>
-      ♙
-      <small>Profile</small>
+
+    <button onclick="alert('Profile coming soon!')">
+
+        ♙
+
+        <small>
+            Profile
+        </small>
+
     </button>
-  </nav>
+
+</nav>
+
 
 </div>
 
-<script type="module" src="app.js"></script>
+
+<script>
+
+
+// ================================================
+// SIMPLE LOCAL DATABASE
+// ================================================
+
+let pets =
+    JSON.parse(
+        localStorage.getItem("lostPets")
+    ) || [];
+
+
+// Current Lost / Found selection
+
+let currentType = "lost";
+
+let currentFilter = "all";
+
+
+// ================================================
+// CHANGE PAGE
+// ================================================
+
+function showPage(page) {
+
+    document
+        .querySelectorAll(".page")
+        .forEach(p =>
+            p.classList.add("hidden")
+        );
+
+    document
+        .getElementById(page)
+        .classList.remove("hidden");
+
+    window.scrollTo(0, 0);
+}
+
+
+// ================================================
+// SELECT LOST / FOUND
+// ================================================
+
+function setType(type, button) {
+
+    currentType = type;
+
+    document
+        .querySelectorAll(".type button")
+        .forEach(b =>
+            b.classList.remove("selected")
+        );
+
+    button.classList.add("selected");
+}
+
+
+// ================================================
+// FILTER
+// ================================================
+
+function filterPets(filter, button) {
+
+    currentFilter = filter;
+
+    document
+        .querySelectorAll(".tabs button")
+        .forEach(b =>
+            b.classList.remove("active")
+        );
+
+    button.classList.add("active");
+
+    displayPets();
+}
+
+
+// ================================================
+// DISPLAY PETS
+// ================================================
+
+function displayPets() {
+
+    const grid =
+        document.getElementById("petGrid");
+
+
+    let filtered = pets;
+
+
+    if (currentFilter !== "all") {
+
+        filtered =
+            pets.filter(
+                pet =>
+                    pet.status === currentFilter
+            );
+
+    }
+
+
+    if (filtered.length === 0) {
+
+        grid.innerHTML = `
+
+            <div class="empty">
+
+                <div style="font-size:50px;">
+                    🐾
+                </div>
+
+                <br>
+
+                No pets reported yet.
+
+                <br><br>
+
+                Click the + button to report one.
+
+            </div>
+
+        `;
+
+        return;
+    }
+
+
+    grid.innerHTML =
+        filtered.map(
+            createCard
+        ).join("");
+}
+
+
+// ================================================
+// CREATE PET CARD
+// ================================================
+
+function createCard(pet) {
+
+    let image;
+
+
+    if (pet.image) {
+
+        image = `
+
+            <div class="card-image">
+
+                <img
+                    src="${pet.image}"
+                    alt="Pet">
+
+            </div>
+
+        `;
+
+    } else {
+
+        let emoji =
+            pet.species === "Cat"
+            ? "🐱"
+            : pet.species === "Bird"
+            ? "🐦"
+            : pet.species === "Rabbit"
+            ? "🐰"
+            : "🐶";
+
+
+        image = `
+
+            <div class="card-image">
+
+                <span class="emoji">
+                    ${emoji}
+                </span>
+
+            </div>
+
+        `;
+
+    }
+
+
+    return `
+
+        <div
+            class="card"
+            onclick="openProfile(${pet.id})">
+
+            ${image}
+
+            <div class="card-info">
+
+                <span class="status">
+                    ${pet.status.toUpperCase()}
+                </span>
+
+                <h3>
+                    ${pet.breed ||
+                      pet.name ||
+                      pet.species}
+                </h3>
+
+                <p>
+                    📍 ${pet.location}
+                </p>
+
+            </div>
+
+        </div>
+
+    `;
+}
+
+
+// ================================================
+// OPEN PROFILE
+// ================================================
+
+function openProfile(id) {
+
+    const pet =
+        pets.find(
+            p => p.id === id
+        );
+
+
+    if (!pet) return;
+
+
+    let image;
+
+
+    if (pet.image) {
+
+        image = `
+
+            <img
+                class="profile-image"
+                src="${pet.image}">
+
+        `;
+
+    } else {
+
+        image = `
+
+            <div
+                class="profile-image"
+                style="
+                    display:flex;
+                    justify-content:center;
+                    align-items:center;
+                    font-size:70px;
+                ">
+
+                🐾
+
+            </div>
+
+        `;
+
+    }
+
+
+    document
+        .getElementById("profileContent")
+        .innerHTML = `
+
+            <div class="profile-top">
+
+                ${image}
+
+                <div>
+
+                    <h1>
+                        ${pet.name ||
+                          "Unnamed Pet"}
+                    </h1>
+
+                    <br>
+
+                    <span class="status">
+
+                        ${pet.status.toUpperCase()}
+
+                    </span>
+
+                    <br><br>
+
+                    <b>
+                        ${pet.breed ||
+                          pet.species}
+                    </b>
+
+                    <p style="
+                        margin-top:10px;
+                        font-size:13px;
+                    ">
+
+                        📍 ${pet.location}
+
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="info">
+
+                <h3>
+                    About
+                </h3>
+
+                <p>
+
+                    ${pet.description ||
+                      "No description provided."}
+
+                </p>
+
+                <br>
+
+                <p>
+
+                    <b>
+                        Color / Markings:
+                    </b>
+
+                    ${pet.color ||
+                      "Not provided"}
+
+                </p>
+
+            </div>
+
+
+            <div class="info">
+
+                <h3>
+                    Contact Information
+                </h3>
+
+                <p>
+                    👤 ${pet.contact}
+                </p>
+
+                <p>
+                    ☎ ${pet.phone}
+                </p>
+
+                <p>
+                    ✉ ${pet.email}
+                </p>
+
+            </div>
+
+
+            ${
+                pet.status === "lost"
+                ?
+
+                `
+
+                <button
+                    class="found"
+                    onclick="markFound(${pet.id})">
+
+                    Mark as Found
+
+                </button>
+
+                `
+
+                : ""
+
+            }
+
+        `;
+
+
+    showPage("profile");
+}
+
+
+// ================================================
+// MARK FOUND
+// ================================================
+
+function markFound(id) {
+
+    const pet =
+        pets.find(
+            p => p.id === id
+        );
+
+
+    if (!pet) return;
+
+
+    pet.status = "found";
+
+
+    savePets();
+
+
+    alert(
+        "Pet marked as found!"
+    );
+
+
+    showPage("feed");
+
+
+    displayPets();
+}
+
+
+// ================================================
+// SAVE DATABASE
+// ================================================
+
+function savePets() {
+
+    localStorage.setItem(
+        "lostPets",
+        JSON.stringify(pets)
+    );
+
+}
+
+
+// ================================================
+// SUBMIT REPORT
+// ================================================
+
+document
+    .getElementById("petForm")
+    .addEventListener(
+        "submit",
+        function(event) {
+
+            event.preventDefault();
+
+
+            const file =
+                document
+                .getElementById("photo")
+                .files[0];
+
+
+            if (file) {
+
+                const reader =
+                    new FileReader();
+
+
+                reader.onload =
+                    function(e) {
+
+                        createPet(
+                            e.target.result
+                        );
+
+                    };
+
+
+                reader.readAsDataURL(file);
+
+            } else {
+
+                createPet("");
+
+            }
+
+        }
+    );
+
+
+// ================================================
+// CREATE PET
+// ================================================
+
+function createPet(image) {
+
+    const pet = {
+
+        id: Date.now(),
+
+        status: currentType,
+
+        name:
+            document
+            .getElementById("name")
+            .value,
+
+        species:
+            document
+            .getElementById("species")
+            .value,
+
+        breed:
+            document
+            .getElementById("breed")
+            .value,
+
+        color:
+            document
+            .getElementById("color")
+            .value,
+
+        location:
+            document
+            .getElementById("location")
+            .value,
+
+        date:
+            document
+            .getElementById("date")
+            .value,
+
+        description:
+            document
+            .getElementById("description")
+            .value,
+
+        contact:
+            document
+            .getElementById("contact")
+            .value,
+
+        phone:
+            document
+            .getElementById("phone")
+            .value,
+
+        email:
+            document
+            .getElementById("email")
+            .value,
+
+        image: image
+
+    };
+
+
+    pets.unshift(pet);
+
+
+    savePets();
+
+
+    document
+        .getElementById("petForm")
+        .reset();
+
+
+    currentType = "lost";
+
+
+    document
+        .querySelectorAll(".type button")
+        .forEach(
+            b =>
+                b.classList.remove("selected")
+        );
+
+
+    document
+        .querySelector(".type button")
+        .classList.add("selected");
+
+
+    alert(
+        "Pet report submitted!"
+    );
+
+
+    showPage("feed");
+
+
+    displayPets();
+
+}
+
+
+// ================================================
+// START
+// ================================================
+
+displayPets();
+
+</script>
 
 </body>
 </html>
